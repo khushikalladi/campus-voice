@@ -1,0 +1,33 @@
+{% extends 'feedback/base.html' %}
+
+{% block content %}
+
+<h2 class="title">Student Login</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color:red; text-align:center;">
+            {{ message }}
+        </p>
+    {% endfor %}
+{% endif %}
+
+<div class="form-box">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label>Username</label>
+<input type="text" name="username">
+
+<label>Password</label>
+<input type="password" name="password">
+
+<button class="post-btn">Login</button>
+
+</form>
+
+</div>
+
+{% endblock %}

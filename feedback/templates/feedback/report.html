@@ -1,0 +1,27 @@
+{% extends 'feedback/base.html' %}
+
+{% block content %}
+
+<div class="form-box">
+
+<h2 class="title">Report Content</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Select Reason</label>
+
+    <select name="reason" required>
+        <option value="spam">Spam</option>
+        <option value="abuse">Abusive</option>
+        <option value="fake">Fake Info</option>
+        <option value="other">Other</option>
+    </select>
+
+    <button class="post-btn">Submit Report</button>
+
+</form>
+
+</div>
+
+{% endblock %}

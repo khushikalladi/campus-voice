@@ -1,0 +1,125 @@
+{% extends 'feedback/base.html' %}
+
+{% block content %}
+
+<div class="post-card">
+
+    <div class="post-category">
+        {{ post.category }}
+    </div>
+
+    <div class="post-content">
+        {{ post.content }}
+    </div>
+
+    <div class="post-footer">
+        <a href="/upvote/{{post.id}}/" class="vote-btn">
+            👍 {{ post.upvotes.count }}
+        </a>
+    </div>
+
+</div>
+
+<h3 class="title">Discussion</h3>
+
+{% for comment in comments %}
+
+<div class="comment-box {% if request.user == comment.user %}my-comment{% endif %}">
+
+    <!-- HEADER -->
+    <div class="comment-header">
+
+        <div class="author-row">
+            <span class="author-name">
+                {{ comment.user.studentprofile.anonymous_name|default:"Anonymous User" }}
+            </span>
+
+            {% if request.user == comment.user %}
+                <span class="you-badge">You</span>
+            {% endif %}
+
+            <span class="comment-time">
+                • {{ comment.created_at|timesince }} ago
+            </span>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="comment-actions">
+
+            {% if request.user == comment.user %}
+                <a href="/delete-comment/{{comment.id}}/" 
+                   class="delete-comment-btn"
+                   onclick="return confirm('Delete this comment?');">
+                    🗑
+                </a>
+            {% else %}
+
+                {% if not comment.already_reported %}
+                    <a href="/report/comment/{{comment.id}}/" 
+                       class="report-btn">
+                        🚨
+                    </a>
+                {% else %}
+                    <span class="reported-label">🚫</span>
+                {% endif %}
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- TEXT -->
+    <div class="comment-text">
+        {{ comment.content }}
+    </div>
+
+</div>
+
+{% empty %}
+
+<p class="empty">No comments yet 😶‍🌫️ Be the first!</p>
+
+{% endfor %}
+
+<!-- COMMENT FORM -->
+
+<div class="form-box">
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="input-group">
+
+            <textarea id="comment-box" name="content"
+                placeholder="Write your comment..." required></textarea>
+
+            <div class="emoji-bar">
+                <span onclick="addEmoji('😊')">😊</span>
+                <span onclick="addEmoji('😂')">😂</span>
+                <span onclick="addEmoji('🔥')">🔥</span>
+                <span onclick="addEmoji('❤️')">❤️</span>
+                <span onclick="addEmoji('👍')">👍</span>
+                <span onclick="addEmoji('💯')">💯</span>
+            </div>
+
+            <button type="submit" class="post-btn">
+                Add Comment
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- EMOJI SCRIPT -->
+<script>
+function addEmoji(emoji) {
+    const input = document.getElementById("comment-box");
+    input.value += emoji;
+    input.focus();
+}
+</script>
+
+{% endblock %}

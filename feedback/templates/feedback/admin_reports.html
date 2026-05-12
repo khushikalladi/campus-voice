@@ -1,0 +1,68 @@
+{% extends 'feedback/base.html' %}
+
+{% block content %}
+
+<h2 class="title">🚨 Reported Content</h2>
+
+{% for report in reports %}
+
+<div class="post-card {% if report.total_reports >= 3 %}danger{% endif %}">
+
+    <!-- WHO REPORTED -->
+    <div class="post-author">
+        Reported by: {{ report.user.username }}
+    </div>
+
+    <!-- REASON -->
+    <div class="post-category">
+        Reason: {{ report.reason }}
+    </div>
+
+    <!-- CONTENT -->
+    <div class="post-content">
+
+        {% if report.post %}
+            <b>POST:</b> {{ report.post.content }}
+        {% elif report.comment %}
+            <b>COMMENT:</b> {{ report.comment.content }}
+        {% endif %}
+
+        <!-- REPORT COUNT -->
+        <div style="margin-top:10px; color:#ff4d6d;">
+            Reports: {{ report.total_reports }}
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="post-footer">
+
+        <!-- ✅ DELETE POST (ADMIN ONLY ROUTE) -->
+        {% if report.post %}
+        <a href="/reports/delete-post/{{report.post.id}}/" 
+           class="delete-btn"
+           onclick="return confirm('Delete this post?');">
+           🗑 Delete Post
+        </a>
+        {% endif %}
+
+        <!-- ✅ DELETE COMMENT (ADMIN ONLY ROUTE) -->
+        {% if report.comment %}
+        <a href="/reports/delete-comment/{{report.comment.id}}/" 
+           class="delete-btn"
+           onclick="return confirm('Delete this comment?');">
+           🗑 Delete Comment
+        </a>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<p class="empty">No reports yet 🎉</p>
+
+{% endfor %}
+
+{% endblock %}

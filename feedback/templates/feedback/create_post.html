@@ -1,0 +1,58 @@
+{% extends 'feedback/base.html' %}
+
+{% block content %}
+
+<h2 class="title">Create Anonymous Post</h2>
+
+<div class="form-box">
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="input-group">
+
+            <label>Category</label>
+
+            <select name="category">
+                <option value="academic">Academic</option>
+                <option value="teacher">Teacher</option>
+                <option value="hostel">Hostel</option>
+                <option value="canteen">Canteen</option>
+                <option value="placement">Placement</option>
+                <option value="general">General</option>
+            </select>
+
+            <label>Your Feedback</label>
+
+            <textarea id="post-box" name="content"
+                placeholder="Write here... 😊" required></textarea>
+
+            <div class="emoji-bar">
+                <span onclick="addEmoji('😊')">😊</span>
+                <span onclick="addEmoji('😂')">😂</span>
+                <span onclick="addEmoji('🔥')">🔥</span>
+                <span onclick="addEmoji('❤️')">❤️</span>
+                <span onclick="addEmoji('👍')">👍</span>
+                <span onclick="addEmoji('💯')">💯</span>
+            </div>
+
+            <button type="submit" class="post-btn">
+                Post Anonymously
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- EMOJI SCRIPT -->
+<script>
+function addEmoji(emoji) {
+    const input = document.getElementById("post-box");
+    input.value += emoji;
+    input.focus();
+}
+</script>
+
+{% endblock %}

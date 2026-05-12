@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>CampusVoice</title>
+
+<link rel="stylesheet" href="{% static 'feedback/style.css' %}">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <img src="{% static 'feedback/logoo.png' %}" alt="logo">
+        <span>CampusVoice</span>
+    </div>
+
+    <div class="nav-links">
+
+        {% if user.is_authenticated %}
+
+            <a href="/">Home</a>
+            <a href="/create">Create Post</a>
+
+            <span class="user-name">
+                🟣 {{ user.studentprofile.anonymous_name }}
+            </span>
+
+            <a href="/logout">Logout</a>
+
+        {% else %}
+
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+
+        {% endif %}
+
+    </div>
+</nav>
+
+<div class="main-layout">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar">
+        <h3>Categories</h3>
+
+        <a href="/" class="{% if not selected_category %}active{% endif %}">All</a>
+        <a href="/?category=academic" class="{% if selected_category == 'academic' %}active{% endif %}">Academic</a>
+        <a href="/?category=teacher" class="{% if selected_category == 'teacher' %}active{% endif %}">Teacher</a>
+        <a href="/?category=hostel" class="{% if selected_category == 'hostel' %}active{% endif %}">Hostel</a>
+        <a href="/?category=canteen" class="{% if selected_category == 'canteen' %}active{% endif %}">Canteen</a>
+        <a href="/?category=placement" class="{% if selected_category == 'placement' %}active{% endif %}">Placement</a>
+        <a href="/?category=general" class="{% if selected_category == 'general' %}active{% endif %}">General</a>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="feed">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="right-sidebar">
+
+        <h3>🔥 Trending</h3>
+
+        {% for post in trending_posts %}
+            <div class="trending-item">
+                <a href="/post/{{post.id}}">
+                    {{ post.content|truncatewords:6 }}
+                </a>
+                <span>👍 {{ post.upvotes.count }}</span>
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<footer class="footer">
+    Built with ❤️ by Khushi • Anonymous Student Feedback and Discussion Platform
+</footer>
+
+<!-- GLOBAL EMOJI SCRIPT -->
+<script>
+function addEmoji(emoji) {
+    const textarea = document.querySelector('textarea[name="content"]');
+    if (textarea) {
+        textarea.value += emoji;
+        textarea.focus();
+    }
+}
+</script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>
