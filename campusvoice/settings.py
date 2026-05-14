@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-00-3u!hr39lw*fi1f@7oc+q#5_58s+qd-a7j64s#&7o=7565%w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['campus-voice-cmvr.onrender.com']
 
 
 # Application definition
